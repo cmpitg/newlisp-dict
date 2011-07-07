@@ -21,9 +21,9 @@
 (println "In context: " (context))
 (println (hello "world" "Hee hee hee"))
 (println (hello "world"))
-(println (MAIN:__<AAA.hello>!! "world"))
-(println (MAIN:__<AAA.hello>!! "world" "WORLD"))
-(println (MAIN:__<AAA.hello>!! "world"))
+(println (MAIN:__<AAA.hello++0>!! "world"))
+(println (MAIN:__<AAA.hello++0>!! "world" "WORLD"))
+(println (MAIN:__<AAA.hello++0>!! "world"))
 (println (hello "world"))
 
 (println MAIN:hello)
@@ -41,4 +41,20 @@
 ;; nil
 
 ;;; end trying
+;;;
+
+;;;
+;;; begin trying again
+
+(local (hello)
+  (println "New: " (Dict:dict-new 'hello))
+  (println "This should be nil: " (hello "world"))
+  (hello "10" "abc")
+  (println "This should be (10 abc): " (Dict:get-pairs hello)))
+
+(println "This should be WORLD: " (hello "world"))
+(println "This should be nil: " (hello "10"))
+(println (Dict:get-pairs hello))
+
+;;; end trying again
 ;;;
