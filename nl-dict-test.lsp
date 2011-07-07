@@ -29,12 +29,11 @@
 
 (define-test (test_creating-and-accessing , my-dict)
   (Dict:dict-new 'my-dict)
-  (my-dict 'hello "HELLO")
-  (my-dict 'world ", WORLD!")
-  (println my-dict)
-  (assert= "HELLO" (my-dict 'hello))
-  (assert= ", WORLD!" (my-dict 'world))
-  (assert= nil (my-dict "hello")))
+  (my-dict "hello" "HELLO")
+  (my-dict "world" ", WORLD!")
+  (assert= "HELLO" (my-dict "hello"))
+  (assert= ", WORLD!" (my-dict "world"))
+  (assert= nil (my-dict "Hello")))
 
 (UnitTest:run-all 'DictTest)
 
