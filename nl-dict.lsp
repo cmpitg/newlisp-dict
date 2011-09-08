@@ -34,7 +34,7 @@
   (context 'MAIN)
   (setq context-sym-str (->dict-name (avoid-conflict-name (string x))))
 
-  ;; switch to the context and put the symbol of from
+  ;; switch to the context and put the symbol of form
   ;; ``Something:Something`` to ``res``
   ;; this will create a key named itself
   (context (sym context-sym-str))

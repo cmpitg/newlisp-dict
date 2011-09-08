@@ -27,13 +27,36 @@
   ;;          (string (Dict:->dict-symbol 'MAIN:a)))
   )
 
-(define-test (test_creating-and-accessing , my-dict)
+(define-test (test_creating-and-accessing , my-dict my-dict-copy)
   (Dict:dict-new 'my-dict)
   (my-dict "hello" "HELLO")
   (my-dict "world" ", WORLD!")
-  (assert= "HELLO" (my-dict "hello"))
-  (assert= ", WORLD!" (my-dict "world"))
-  (assert= nil (my-dict "Hello")))
+  (assert= "HELLO"     (my-dict "hello"))
+  (assert= ", WORLD!"  (my-dict "world"))
+  (assert= nil         (my-dict "Hello"))
+
+  ;; making a copy of it, does it work?
+  (setq my-dict-copy my-dict)
+  (assert= "HELLO"     (my-dict-copy "hello"))
+  (assert= ", WORLD!"  (my-dict-copy "world"))
+  (assert= nil         (my-dict-copy "Hello"))
+
+  ;; making a new one with the same name?
+  (Dict:dict-new 'my-dict)
+  (assert= "HELLO"  (my-dict-copy "hello"))
+  (assert= nil      (my-dict "hello"))
+  )
+
+(define-test (test_creating-and-accessing-after)
+  ;; does 'my-dict still contains the old dictionary?
+  (assert= nil my-dict)
+
+  ;; how about creating a new one?
+  (Dict:dict-new 'my-dict)
+  (my-dict "world" 'world)
+  (assert= 'world (my-dict "world"))
+  (assert= nil    (my-dict "hello"))
+  )
 
 (UnitTest:run-all 'DictTest)
 
