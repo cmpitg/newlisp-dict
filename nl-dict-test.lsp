@@ -28,7 +28,7 @@
   )
 
 (define-test (test_creating-and-accessing , my-dict my-dict-copy)
-  (Dict:dict-new 'my-dict)
+  (setq my-dict (Dict:dict-new))
   (my-dict "hello" "HELLO")
   (my-dict "world" ", WORLD!")
   (assert= "HELLO"     (my-dict "hello"))
@@ -42,7 +42,7 @@
   (assert= nil         (my-dict-copy "Hello"))
 
   ;; making a new one with the same name?
-  (Dict:dict-new 'my-dict)
+  (setq my-dict (Dict:dict-new))
   (assert= "HELLO"  (my-dict-copy "hello"))
   (assert= nil      (my-dict "hello"))
   )
@@ -52,7 +52,7 @@
   (assert= nil my-dict)
 
   ;; how about creating a new one?
-  (Dict:dict-new 'my-dict)
+  (setq my-dict (Dict:dict-new))
   (my-dict "world" 'world)
   (assert= 'world (my-dict "world"))
   (assert= nil    (my-dict "hello"))
