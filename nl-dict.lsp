@@ -25,33 +25,35 @@
 ;;;
 
 (define (->dict-name x , str)
+  "Transforming a symbol to a dictionary name"
   (setq str (replace ":" (string x) "."))
   (append +begin-context+ str +end-context+))
 
-(define (dict-new x , context-sym-str cont res)
+(define (dict-new , context-sym-str cont res)
+  "Create a new dictionary as the return value"
+
   ;; transform the dictionary name to context symbol, avoid naming
   ;; conflict
   (context 'MAIN)
-  (setq context-sym-str (->dict-name (avoid-conflict-name (string x))))
+  (setq context-sym-str (->dict-name (avoid-conflict-name "NL-DICT.DICT")))
+  (println "-- debug >> context-sym-str " context-sym-str)
 
-  ;; switch to the context and put the symbol of from
-  ;; ``Something:Something`` to ``res``
-  ;; this will create a key named itself
+  ;; switch to the context and set the symbol of form
+  ;; ``Something:Something`` into the variable ``res``
   (context (sym context-sym-str))
   (setq res (sym context-sym-str))
 
-  ;; now, create the context, which is our dictionary
+  ;; now, create our dictionary
   (context 'MAIN)
   (eval (expand '(define res) 'res))
 
-  ;; (println "In context: " (context) " " res " " x)
-
-  ;; put the reference to the dictionary into the symbol of `x`
-  (set x (eval (sym context-sym-str))))
+  ;; and return it!
+  (eval (sym context-sym-str)))
 
 (define (get-pairs dict)
   (filter (fn (x) (not (or (starts-with (first x) +begin-context+)
-                           (ends-with   (first x)   +end-context+)))) (dict)))
+                           (ends-with   (first x)   +end-context+))))
+          (dict)))
 
 (define (avoid-conflict-name context-str)
   "Check whether the name is created, and increase the counter if necessary"
