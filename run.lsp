@@ -11,50 +11,13 @@
 
 (load "nl-dict.lsp")
 
-;;;
-;;; begin trying
+(context 'Testing)
 
-(context 'AAA)
+(define a-dict (Dict:dict))
+(define b-dict (Dict:dict "a" 1))
 
-;; (println "New: " (setq hello (Dict:dict-new 'hello)))
-(println "New: " (setq hello (Dict:dict-new)))
-(println "In context: " (context))
-(println (hello "world" "Hee hee hee"))
-(println (hello "world"))
-(println (MAIN:__<NL-DICT.DICT++0>!! "world"))
-(println (MAIN:__<NL-DICT.DICT++0>!! "world" "WORLD"))
-(println (MAIN:__<NL-DICT.DICT++0>!! "world"))
-(println (hello "world"))
+;; (println (->list a-dict))
+;; (println (->list b-dict))
 
-(println MAIN:hello)
-
-;;; desired output:
-
-;; New: __<NL-DICT.DICT++0>!!
-;; In context: AAA
-;; Hee hee hee
-;; Hee hee hee
-;; Hee hee hee
-;; WORLD
-;; WORLD
-;; WORLD
-;; nil
-
-;;; end trying
-;;;
-
-;;;
-;;; begin trying again
-
-(local (hello)
-  (println "New: " (setq hello (Dict:dict-new)))
-  (println "This should be nil: " (hello "world"))
-  (hello "10" "abc")
-  (println "This should be ((\"10\" \"abc\")): " (Dict:get-pairs hello)))
-
-(println "This should be WORLD: " (hello "world"))
-(println "This should be nil: " (hello "10"))
-(println (Dict:get-pairs hello))
-
-;;; end trying again
-;;;
+(context 'MAIN)
+(exit)

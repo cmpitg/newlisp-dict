@@ -9,10 +9,16 @@
 ;;; Copyright (c) 2011 by Dương "Yang" ヤン Hà Nguyễn <cmpitg@gmail.com>
 ;;;
 
+;;; Require nl-tim
+
+
+
 (context 'Dict)
 
 (constant '+begin-context+ "__<")
 (constant '+end-context+   ">!!")
+(constant '+begin-type+    "*!*")
+(constant '+end-type+      "!*!")
 
 (define Dict.DictList:Dict.DictList)
 
@@ -22,6 +28,10 @@
 ;;; * transform a-symbol into Dict's notation
 ;;; * void naming conflict simply by counting instances
 ;;; * create a new context on behalf of it
+;;;
+
+;;;
+;;; helpers
 ;;;
 
 (define (->dict-name x , str)
@@ -36,7 +46,7 @@
   ;; conflict
   (context 'MAIN)
   (setq context-sym-str (->dict-name (avoid-conflict-name "NL-DICT.DICT")))
-  (println "-- debug >> context-sym-str " context-sym-str)
+  ;; (println "[DEBUG] context-sym-str " context-sym-str)
 
   ;; switch to the context and set the symbol of form
   ;; ``Something:Something`` into the variable ``res``
@@ -50,11 +60,6 @@
   ;; and return it!
   (eval (sym context-sym-str)))
 
-(define (get-pairs dict)
-  (filter (fn (x) (not (or (starts-with (first x) +begin-context+)
-                           (ends-with   (first x)   +end-context+))))
-          (dict)))
-
 (define (avoid-conflict-name context-str)
   "Check whether the name is created, and increase the counter if necessary"
   ;; (println "-- avoid... => " context-str " " (Dict.DictList))
@@ -67,4 +72,66 @@
         (Dict.DictList context-str 0)
         (append context-str "++0"))))
 
+(define (dict->list real-dict)
+  (map (fn (x)
+         (list (->external-type (first x)) (x 1))
+         )
+       (filter (fn (x) (not (or (starts-with (first x) +begin-context+)
+                                (ends-with   (first x)   +end-context+))))
+               (real-dict))))
+
+(define (decode-type str)
+  (3 (- (find +end-type+ str) 3) str))
+
+(define (get-value str)
+  ((+ (find +end-type+ str) 3) str))
+
+(define (->internal-type symbol)
+  (append +begin-type+ (string (type-of symbol)) +end-type+
+          (string symbol))
+  ;; (println "[DEBUG] ->internal-type >> "
+  ;;          (append +begin-type+ (string (type-of symbol)) +end-type+
+  ;;                  (string symbol))
+  ;;          )
+  )
+
+
+(define (->external-type str , tim-type)
+  ;; * get the type
+  ;; * convert back using ``read-expr`` or manually converting using
+  ;;   my own reader/writer
+
+  (setq tim-type  (decode-type str)
+        tim-value (get-value str))
+  (if (= "string-t"  tim-type)  tim-value
+      (= "integer-t" tim-type)  (int tim-value))
+  )
+
+;;;
+;;; main
+;;;
+
+(define (->list dict)
+  (println "[DEBUG] ->list >> " dict)
+  (dict->list (first (rest dict))))
+
+(define (dict)
+  (letn ((real-dict     (dict-new))
+         (keys-vals     (args))
+         (n-keys        (/ (length keys-vals)
+                           2)))
+    (dotimes (i n-keys)
+      (real-dict (->internal-type (keys-vals (* 2 i)))
+                 (keys-vals (+ (* 2 i) 1))))
+
+    (list 'dict-t real-dict)
+    )
+  )
+
 (context 'MAIN)
+
+(define ->list Dict:->list)
+(define dict   Dict:dict)
+
+(global '->list)
+(global 'dict)

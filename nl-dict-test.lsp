@@ -9,56 +9,29 @@
 ;;; Copyright (c) 2011 by Dương "Yang" ヤン Hà Nguyễn <cmpitg@gmail.com>
 ;;;
 
-(load-unittest)
+;;; Require newlisp-unittest
+
 (load "nl-dict.lsp")
 
-(context 'DictTest)
+(context 'Dict)
 
-(define-test (test_transforming)
-  (assert= "__<DictTest.aoeu>!!" (Dict:->dict-name 'aoeu))
-  (assert= "__<MAIN.a>!!" (Dict:->dict-name 'MAIN:a))
-  (assert= "__<DictTest.*aoeu>!!" (Dict:->dict-name '*aoeu))
+(define-test (test_decode-type)
+  (assert= "string-t"
+           (decode-type "*!*string-t!*!Hello world"))
+  (assert= "integer-t"
+           (decode-type "*!*integer-t!*!120")))
 
-  ;; (assert= "__<DictTest.*aoeu>!!:__<DictTest.*aoeu>!!"
-  ;;          (string (Dict:->dict-symbol '*aoeu)))
-  ;; (assert= "__<DictTest.aoeu>!!:__<DictTest.aoeu>!!"
-  ;;          (string (Dict:->dict-symbol 'aoeu)))
-  ;; (assert= "__<MAIN.a>!!:__<MAIN.a>!!"
-  ;;          (string (Dict:->dict-symbol 'MAIN:a)))
-  )
+(define-test (test_get-value)
+  (assert= "aoeu"
+           (get-value "*!*string-t!*!aoeu")))
 
-(define-test (test_creating-and-accessing , my-dict my-dict-copy)
-  (setq my-dict (Dict:dict-new))
-  (my-dict "hello" "HELLO")
-  (my-dict "world" ", WORLD!")
-  (assert= "HELLO"     (my-dict "hello"))
-  (assert= ", WORLD!"  (my-dict "world"))
-  (assert= nil         (my-dict "Hello"))
+(define-test (test_external-type)
+  (assert= "aoeu"
+           (->external-type "*!*string-t!*!aoeu"))
+  (assert= 2022
+           (->external-type "*!*integer-t!*!2022")))
 
-  ;; making a copy of it, does it work?
-  (setq my-dict-copy my-dict)
-  (assert= "HELLO"     (my-dict-copy "hello"))
-  (assert= ", WORLD!"  (my-dict-copy "world"))
-  (assert= nil         (my-dict-copy "Hello"))
-
-  ;; making a new one with the same name?
-  (setq my-dict (Dict:dict-new))
-  (assert= "HELLO"  (my-dict-copy "hello"))
-  (assert= nil      (my-dict "hello"))
-  )
-
-(define-test (test_creating-and-accessing-after)
-  ;; does 'my-dict still contains the old dictionary?
-  (assert= nil my-dict)
-
-  ;; how about creating a new one?
-  (setq my-dict (Dict:dict-new))
-  (my-dict "world" 'world)
-  (assert= 'world (my-dict "world"))
-  (assert= nil    (my-dict "hello"))
-  )
-
-(UnitTest:run-all 'DictTest)
+(UnitTest:run-all 'Dict)
 
 (context 'MAIN)
 (exit)
