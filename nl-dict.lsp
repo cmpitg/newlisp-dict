@@ -133,7 +133,17 @@
   )
 
 (define (-> dict key)
-  ((dict 1) (->internal-type key))
+  ((dict 1) (->internal-type key)))
+
+(define (<- dict)
+  (letn ((real-dict     (dict 1))
+         (keys-vals     (args))
+         (n-keys        (/ (length keys-vals)
+                           2)))
+    (dotimes (i n-keys)
+      (real-dict (->internal-type (keys-vals (* 2 i)))
+                 (keys-vals (+ (* 2 i) 1))))
+    )
   )
 
 (context 'MAIN)
@@ -141,7 +151,9 @@
 (define ->list Dict:->list)
 (define dict   Dict:dict)
 (define ->     Dict:->)
+(define <-     Dict:<-)
 
 (global '->list)
 (global 'dict)
 (global '->)
+(global '<-)

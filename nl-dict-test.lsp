@@ -70,6 +70,24 @@
            (-> d '(a b c)))
 )
 
+(define-test (test_<- , d)
+  (setq d (Dict:dict 'a "Char: a"
+                     "b" "String: b"
+                     123 'number-123
+                     true true
+                     (list 'a 'b 'c) "List: '(a b c)"))
+
+  (assert= "Char: a"     (-> d 'a))
+  (<- d 'a "Symbol: 'a")
+  (assert= "Symbol: 'a"  (-> d 'a))
+
+  (<- d "b" {Just "b"}
+      '123 '123)
+
+  (assert= {Just "b"}   (-> d "b"))
+  (assert= '123   (-> d 123))
+)
+
 (UnitTest:run-all 'Dict)
 
 (context 'MAIN)
