@@ -11,13 +11,17 @@
 
 (load "nl-dict.lsp")
 
-(context 'Testing)
+(context 'Trying)
 
 (define a-dict (Dict:dict))
-(define b-dict (Dict:dict "a" 1))
+(define b-dict (Dict:dict 'a "Char: a"
+                          "b" "String: b"
+                          123 'number-123
+                          true true
+                          (list 'a 'b 'c) "List: '(a b c)"))
 
 ;; (println (->list a-dict))
-;; (println (->list b-dict))
+(println (->list b-dict))
 
 (context 'MAIN)
 (exit)

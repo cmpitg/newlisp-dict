@@ -103,8 +103,11 @@
 
   (setq tim-type  (decode-type str)
         tim-value (get-value str))
-  (if (= "string-t"  tim-type)  tim-value
-      (= "integer-t" tim-type)  (int tim-value))
+
+  (if (= "dict-t"    tim-type)    nil
+      (= "string-t"  tim-type)    tim-value
+      (read-expr tim-value)
+      )
   )
 
 ;;;
@@ -112,10 +115,11 @@
 ;;;
 
 (define (->list dict)
-  (println "[DEBUG] ->list >> " dict)
+  ;; (println "[DEBUG] ->list >> " dict)
   (dict->list (first (rest dict))))
 
 (define (dict)
+  "Return a dictionary of the form: (list 'dict-t dict-repr-as-context)"
   (letn ((real-dict     (dict-new))
          (keys-vals     (args))
          (n-keys        (/ (length keys-vals)
@@ -128,10 +132,16 @@
     )
   )
 
+(define (-> dict key)
+  ((dict 1) (->internal-type key))
+  )
+
 (context 'MAIN)
 
 (define ->list Dict:->list)
 (define dict   Dict:dict)
+(define ->     Dict:->)
 
 (global '->list)
 (global 'dict)
+(global '->)
