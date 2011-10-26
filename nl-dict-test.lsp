@@ -17,42 +17,42 @@
 
 (define-test (test_decode-type)
   (assert= "string-t"
-           (decode-type "*!*string-t!*!Hello world"))
+           (decode-type "\x12string-t\x13Hello world"))
   (assert= "integer-t"
-           (decode-type "*!*integer-t!*!120")))
+           (decode-type "\x12integer-t\x13120")))
 
 (define-test (test_->internal-type)
-  (assert= "*!*string-t!*!Hello world"
+  (assert= "\x12string-t\x13Hello world"
            (->internal-type "Hello world"))
-  (assert= "*!*integer-t!*!123"
+  (assert= "\x12integer-t\x13123"
            (->internal-type 123))
-  (assert= "*!*symbol-t!*!hellO"
+  (assert= "\x12symbol-t\x13hellO"
            (->internal-type 'hellO))
-  (assert= "*!*list-t!*!(3 2 1 \"abc\")"
+  (assert= "\x12list-t\x13(3 2 1 \"abc\")"
            (->internal-type (list 3 2 1 "abc")))
-  (assert= "*!*symbol-t!*!nil"
+  (assert= "\x12symbol-t\x13nil"
            (->internal-type nil))
-  (assert= "*!*true-t!*!true"
+  (assert= "\x12true-t\x13true"
            (->internal-type true))
   )
 
 (define-test (test_get-value)
   (assert= "aoeu"
-           (get-value "*!*string-t!*!aoeu")))
+           (get-value "\x12string-t\x13aoeu")))
 
 (define-test (test_->external-type)
   (assert= "aoeu"
-           (->external-type "*!*string-t!*!aoeu"))
+           (->external-type "\x12string-t\x13aoeu"))
   (assert= 2022
-           (->external-type "*!*integer-t!*!2022"))
+           (->external-type "\x12integer-t\x132022"))
   (assert= 'abc
-           (->external-type "*!*symbol-t!*!abc"))
+           (->external-type "\x12symbol-t\x13abc"))
   (assert= '(1 4 5 "a")
-           (->external-type "*!*list-t!*!(1 4 5 \"a\")"))
+           (->external-type "\x12list-t\x13(1 4 5 \"a\")"))
   (assert= true
-           (->external-type "*!*true-t!*!true"))
+           (->external-type "\x12true-t\x13true"))
   (assert= nil
-           (->external-type "*!*symbol-t!*!nil"))
+           (->external-type "\x12symbol-t\x13nil"))
   )
 
 (define-test (test_-> , d)

@@ -13,10 +13,12 @@
 
 (context 'Dict)
 
-(constant '+begin-context+ "__<")
-(constant '+end-context+   ">!!")
-(constant '+begin-type+    "*!*")
-(constant '+end-type+      "!*!")
+(constant '+begin-context+ "<")
+(constant '+end-context+   "!")
+(constant '+begin-type+    "\x12")
+(constant '+end-type+      "\x13")
+
+(constant '+global-dict-symbol+ "N.d")
 
 (define Dict.DictList:Dict.DictList)
 
@@ -43,8 +45,8 @@
   ;; transform the dictionary name to context symbol, avoid naming
   ;; conflict
   (context 'MAIN)
-  (setq context-sym-str (->dict-name (avoid-conflict-name "NL-DICT.DICT")))
-  ;; (println "[DEBUG] context-sym-str " context-sym-str)
+  (setq context-sym-str (->dict-name (avoid-conflict-name +global-dict-symbol+)))
+  (println "[DEBUG] context-sym-str " context-sym-str)
 
   ;; switch to the context and set the symbol of form
   ;; ``Something:Something`` into the variable ``res``
@@ -79,10 +81,10 @@
                (real-dict))))
 
 (define (decode-type str)
-  (3 (- (find +end-type+ str) 3) str))
+  (1 (- (find +end-type+ str) 1) str))
 
 (define (get-value str)
-  ((+ (find +end-type+ str) 3) str))
+  ((+ (find +end-type+ str) 1) str))
 
 (define (->internal-type symbol)
   (append +begin-type+ (string (type-of symbol)) +end-type+
