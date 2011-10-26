@@ -13,6 +13,9 @@
 
 (context 'Dict)
 
+(define *function-lst*
+  (list '<- '-> 'dict '->list))
+
 (constant '+begin-context+ "<")
 (constant '+end-context+   "!")
 (constant '+begin-type+    "\x12")
@@ -115,6 +118,7 @@
 ;;;
 
 (define (->list dict)
+  "Convert to association list"
   ;; (println "[DEBUG] ->list >> " dict)
   (dict->list (first (rest dict))))
 
@@ -133,9 +137,11 @@
   )
 
 (define (-> dict key)
+  "Getter"
   ((dict 1) (->internal-type key)))
 
 (define (<- dict)
+  "Setter"
   (letn ((real-dict     (dict 1))
          (keys-vals     (args))
          (n-keys        (/ (length keys-vals)
@@ -156,7 +162,4 @@
 (define ->       Dict:->)
 (define <-       Dict:<-)
 
-(global '->list)
-(global 'dict)
-(global '->)
-(global '<-)
+(apply make-global *function-lst*)
