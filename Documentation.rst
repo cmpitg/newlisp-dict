@@ -31,8 +31,6 @@ Accessing
     (define a-dict (Dict:dict 'a "Hello world"))
     (-> a-dict 'a)                                    => "Hello world"
     (-> a-dict 'b)                                    => nil
-    (has-key? a-dict 'a)                              => true
-    (has-key? a-dict 'b)                              => nil
 
 Modifying
 =========

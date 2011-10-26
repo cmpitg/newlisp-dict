@@ -11,8 +11,6 @@
 
 ;;; Require nl-tim
 
-
-
 (context 'Dict)
 
 (constant '+begin-context+ "__<")
@@ -146,12 +144,15 @@
     )
   )
 
+(define (has-key? dict key)
+  (lookup key (->list dict)))
+
 (context 'MAIN)
 
-(define ->list Dict:->list)
-(define dict   Dict:dict)
-(define ->     Dict:->)
-(define <-     Dict:<-)
+(define ->list   Dict:->list)
+(define dict     Dict:dict)
+(define ->       Dict:->)
+(define <-       Dict:<-)
 
 (global '->list)
 (global 'dict)
