@@ -55,4 +55,4 @@ To association list
 ::
 
     (define a-dict (Dict:dict 'a 1 "b" 2))
-    (->list a-dict)                                   => (('a 1) ("b" 2))
+    (dict->list a-dict)                               => (('a 1) ("b" 2))

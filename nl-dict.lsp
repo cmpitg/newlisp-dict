@@ -13,9 +13,6 @@
 
 (context 'Dict)
 
-(define *function-lst*
-  (list '<- '-> 'dict '->list))
-
 (constant '+begin-context+ "<")
 (constant '+end-context+   "!")
 (constant '+begin-type+    "\x12")
@@ -49,7 +46,6 @@
   ;; conflict
   (context 'MAIN)
   (setq context-sym-str (->dict-name (avoid-conflict-name +global-dict-symbol+)))
-  (println "[DEBUG] context-sym-str " context-sym-str)
 
   ;; switch to the context and set the symbol of form
   ;; ``Something:Something`` into the variable ``res``
@@ -75,12 +71,12 @@
         (Dict.DictList context-str 0)
         (append context-str "++0"))))
 
-(define (dict->list real-dict)
+(define (internal-dict->list internal-dict)
   (map (fn (x)
          (list (->external-type (first x)) (x 1)))
        (filter (fn (x) (not (or (starts-with (first x) +begin-context+)
                                 (ends-with   (first x)   +end-context+))))
-               (real-dict))))
+               (internal-dict))))
 
 (define (decode-type str)
   (1 (- (find +end-type+ str) 1) str))
@@ -109,10 +105,9 @@
 ;;; main
 ;;;
 
-(define (->list dict)
+(define (dict->list dict)
   "Convert to association list"
-  ;; (println "[DEBUG] ->list >> " dict)
-  (dict->list (first (rest dict))))
+  (internal-dict->list (first (rest dict))))
 
 (define (dict)
   "Return a dictionary of the form: (list 'dict-t dict-repr-as-context)"
@@ -139,14 +134,14 @@
       (real-dict (->internal-type (keys-vals (* 2 i)))
                  (keys-vals (+ (* 2 i) 1))))))
 
-(define (has-key? dict key)
-  (lookup key (->list dict)))
-
 (context 'MAIN)
 
-(define ->list   Dict:->list)
-(define dict     Dict:dict)
-(define ->       Dict:->)
-(define <-       Dict:<-)
+(define dict->list   Dict:dict->list)
+(define dict         Dict:dict)
+(define ->           Dict:->)
+(define <-           Dict:<-)
 
-(apply make-global *function-lst*)
+(make-global 'dict->list
+             'dict
+             '->
+             '<-)

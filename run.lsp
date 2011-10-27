@@ -25,8 +25,7 @@
 ;; (context 'Trying)
 ;; (println (->list A:d))
 
-(println (->list a-dict))
-(println (->list b-dict))
+(println (dict->list a-dict))
+(println (dict->list b-dict))
 
 (context 'MAIN)
-(exit)
