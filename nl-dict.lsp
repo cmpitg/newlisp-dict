@@ -77,8 +77,7 @@
 
 (define (dict->list real-dict)
   (map (fn (x)
-         (list (->external-type (first x)) (x 1))
-         )
+         (list (->external-type (first x)) (x 1)))
        (filter (fn (x) (not (or (starts-with (first x) +begin-context+)
                                 (ends-with   (first x)   +end-context+))))
                (real-dict))))
@@ -91,12 +90,7 @@
 
 (define (->internal-type symbol)
   (append +begin-type+ (string (type-of symbol)) +end-type+
-          (string symbol))
-  ;; (println "[DEBUG] ->internal-type >> "
-  ;;          (append +begin-type+ (string (type-of symbol)) +end-type+
-  ;;                  (string symbol))
-  ;;          )
-  )
+          (string symbol)))
 
 
 (define (->external-type str , tim-type)
@@ -107,11 +101,9 @@
   (setq tim-type  (decode-type str)
         tim-value (get-value str))
 
-  (if (= "dict-t"    tim-type)    nil
-      (= "string-t"  tim-type)    tim-value
-      (read-expr tim-value)
-      )
-  )
+  (if (= "dict"    tim-type)    nil
+      (= "string"  tim-type)    tim-value
+      (read-expr tim-value)))
 
 ;;;
 ;;; main
@@ -132,9 +124,7 @@
       (real-dict (->internal-type (keys-vals (* 2 i)))
                  (keys-vals (+ (* 2 i) 1))))
 
-    (list 'dict-t real-dict)
-    )
-  )
+    (list 'dict-t real-dict)))
 
 (define (-> dict key)
   "Getter"
@@ -144,13 +134,10 @@
   "Setter"
   (letn ((real-dict     (dict 1))
          (keys-vals     (args))
-         (n-keys        (/ (length keys-vals)
-                           2)))
+         (n-keys        (/ (length keys-vals) 2)))
     (dotimes (i n-keys)
       (real-dict (->internal-type (keys-vals (* 2 i)))
-                 (keys-vals (+ (* 2 i) 1))))
-    )
-  )
+                 (keys-vals (+ (* 2 i) 1))))))
 
 (define (has-key? dict key)
   (lookup key (->list dict)))

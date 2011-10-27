@@ -16,43 +16,43 @@
 (context 'Dict)
 
 (define-test (test_decode-type)
-  (assert= "string-t"
-           (decode-type "\x12string-t\x13Hello world"))
-  (assert= "integer-t"
-           (decode-type "\x12integer-t\x13120")))
+  (assert= "string"
+           (decode-type "\x12string\x13Hello world"))
+  (assert= "integer"
+           (decode-type "\x12integer\x13120")))
 
 (define-test (test_->internal-type)
-  (assert= "\x12string-t\x13Hello world"
+  (assert= "\x12string\x13Hello world"
            (->internal-type "Hello world"))
-  (assert= "\x12integer-t\x13123"
+  (assert= "\x12integer\x13123"
            (->internal-type 123))
-  (assert= "\x12symbol-t\x13hellO"
+  (assert= "\x12symbol\x13hellO"
            (->internal-type 'hellO))
-  (assert= "\x12list-t\x13(3 2 1 \"abc\")"
+  (assert= "\x12list\x13(3 2 1 \"abc\")"
            (->internal-type (list 3 2 1 "abc")))
-  (assert= "\x12symbol-t\x13nil"
+  (assert= "\x12boolean\x13nil"
            (->internal-type nil))
-  (assert= "\x12true-t\x13true"
+  (assert= "\x12boolean\x13true"
            (->internal-type true))
   )
 
 (define-test (test_get-value)
   (assert= "aoeu"
-           (get-value "\x12string-t\x13aoeu")))
+           (get-value "\x12string\x13aoeu")))
 
 (define-test (test_->external-type)
   (assert= "aoeu"
-           (->external-type "\x12string-t\x13aoeu"))
+           (->external-type "\x12string\x13aoeu"))
   (assert= 2022
-           (->external-type "\x12integer-t\x132022"))
+           (->external-type "\x12integer\x132022"))
   (assert= 'abc
-           (->external-type "\x12symbol-t\x13abc"))
+           (->external-type "\x12symbol\x13abc"))
   (assert= '(1 4 5 "a")
-           (->external-type "\x12list-t\x13(1 4 5 \"a\")"))
+           (->external-type "\x12list\x13(1 4 5 \"a\")"))
   (assert= true
-           (->external-type "\x12true-t\x13true"))
+           (->external-type "\x12true\x13true"))
   (assert= nil
-           (->external-type "\x12symbol-t\x13nil"))
+           (->external-type "\x12symbol\x13nil"))
   )
 
 (define-test (test_-> , d)
