@@ -1,0 +1,6 @@
+[submodule "nl-tim"]
+	path = nl-tim
+	url = git@github.com:CMPITG/newlisp-tim.git
+[submodule "nl-unittest"]
+	path = nl-unittest
+	url = git@github.com:CMPITG/newlisp-unittest.git

@@ -1,12 +1,11 @@
-#!/usr/bin/newlisp
-
 ;;;
 ;;; This file is a part of the **newlisp-dict** project, release under
 ;;; the terms of the MIT License
 ;;;
 ;;; See COPYING for more details.
 ;;;
-;;; Copyright (c) 2011 by Dương "Yang" ヤン Hà Nguyễn <cmpitg@gmail.com>
+;;; Copyright (c) 2011-2012 by Dương "Yang" ヤン Hà Nguyễn
+;;; <cmpitg@gmail.com>
 ;;;
 
 ;;; Require nl-tim
@@ -21,6 +20,9 @@
 (constant '+global-dict-symbol+ "N.d")
 
 (define Dict.DictList:Dict.DictList)
+
+;;; Load nl-tim
+(load "nl-tim/nl-tim.lsp")
 
 ;;;
 ;;; whenever ``dict-new a-symbol`` is called

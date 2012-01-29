@@ -6,12 +6,14 @@
 ;;;
 ;;; See COPYING for more details.
 ;;;
-;;; Copyright (c) 2011 by Dương "Yang" ヤン Hà Nguyễn <cmpitg@gmail.com>
+;;; Copyright (c) 2011-2012 by Dương "Yang" ヤン Hà Nguyễn
+;;; <cmpitg@gmail.com>
 ;;;
 
 ;;; Require newlisp-unittest
 
 (load "nl-dict.lsp")
+(load "nl-unittest/nl-unittest.lsp")
 
 (context 'Dict)
 
