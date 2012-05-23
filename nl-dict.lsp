@@ -1,3 +1,5 @@
+;;; -*- mode: newlisp -*-
+
 ;;;
 ;;; This file is a part of the **newlisp-dict** project, release under
 ;;; the terms of the MIT License
@@ -21,8 +23,8 @@
 
 (define Dict.DictList:Dict.DictList)
 
-;;; Load nl-tim
-(load "nl-tim/nl-tim.lsp")
+;;; Load nl-tim if it's not loaded
+(unless NL-TIM (load "nl-tim/nl-tim.lsp"))
 
 ;;;
 ;;; whenever ``dict-new a-symbol`` is called
